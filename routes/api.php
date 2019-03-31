@@ -20,3 +20,10 @@ $uri = "test";
 Route::get($uri, function () {
     return response()->json("Laravel sent this baby!");
 });
+
+Route::resource('users', 'API\UserController')->only([
+    'index','show', 'store', 'update', 'destroy'
+]);
+Route::post('/register', 'AuthController@register');
+Route::post('/login', 'AuthController@login');
+Route::post('/logout', 'AuthController@logout');
