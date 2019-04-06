@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTablesTable extends Migration
+class CreateWaitersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,10 @@ class CreateTablesTable extends Migration
      */
     public function up()
     {
-        Schema::create('tables', function (Blueprint $table) {
-            $table->increments('id');
-            $table->foreign('places_id')->references('id')->on('places');
-            $table->int("slots");
-            $table->int("idQR");
-            $table->int("status");
-            $table->int("tableNumber");
+        Schema::create('waiters', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->foreign('user_id')->references('id')-> on('users');
+            $table->foreign('places_id')->references('id')->on ('places');
             $table->timestamps();
         });
     }
@@ -31,6 +28,6 @@ class CreateTablesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tables');
+        Schema::dropIfExists('waiters');
     }
 }

@@ -16,10 +16,9 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             
             $table->bigIncrements('id');
-            $table->int('idTable');
-            $table->int ('idUser');
-            $table->int('idWaiter');
-            $table->int('idOrderProd');
+            $table->foreign('table_id')->references('id')->on('tables');
+            $table->foreign('client_id')->references('id')->on('clients');
+            $table->foreign('waiter_id')->references('id')->on('waiters');
             $table->string('status');
             $table->timestamps();
 

@@ -15,17 +15,16 @@ class CreatePlacesTable extends Migration
     {
         Schema::create('places', function (Blueprint $table) {
             
-            $table->increments('id');
+            $table->bigIncrements('id');
+            $table->foreign('places_owners_id')->references('id')->on("places_owners");
             $table->string('type');
             $table->string('name');
             $table->string('address');
             $table->string('city');
             $table->string('country');
             $table->string('zipcode');
-            $table->string('idMenu');
             $table->int('totalSlots');
             $table->int('availableSlots');
-            
             $table->timestamps();
 
         });
