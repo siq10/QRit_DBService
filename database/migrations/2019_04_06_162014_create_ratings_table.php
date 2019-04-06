@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateWaitersTable extends Migration
+class CreateRatingsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,14 @@ class CreateWaitersTable extends Migration
      */
     public function up()
     {
-        Schema::create('waiters', function (Blueprint $table) {
+        Schema::create('ratings', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('user_id')->unsigned();
+            $table->bigInteger('client_id')->unsigned();
             $table->bigInteger('places_id')->unsigned();
-            $table->foreign('user_id')->references('id')-> on('users');
-            $table->foreign('places_id')->references('id')->on ('places');
+            $table->foreign('client_id')->references('id')->on('clients');
+            $table->foreign('places_id')->references('id')->on('places');
+            $table->string('comment');
+            $table->string('type');
             $table->timestamps();
         });
     }
@@ -30,6 +32,6 @@ class CreateWaitersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('waiters');
+        Schema::dropIfExists('ratings');
     }
 }

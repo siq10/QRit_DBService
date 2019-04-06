@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePlacesOwnersTable extends Migration
+class CreateOwnersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreatePlacesOwnersTable extends Migration
      */
     public function up()
     {
-        Schema::create('places_owners', function (Blueprint $table) {
+        Schema::create('owners', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('places_id')->references('id')->on('places');
             $table->timestamps();
         });
-        });
+       
     }
 
     /**
@@ -29,6 +29,6 @@ class CreatePlacesOwnersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('places_owners');
+        Schema::dropIfExists('owners');
     }
 }

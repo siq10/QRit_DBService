@@ -14,12 +14,13 @@ class CreateTablesTable extends Migration
     public function up()
     {
         Schema::create('tables', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
+            $table->bigInteger('places_id')->unsigned();
             $table->foreign('places_id')->references('id')->on('places');
-            $table->int("slots");
-            $table->int("idQR");
-            $table->int("status");
-            $table->int("tableNumber");
+            $table->integer("slots");
+            $table->integer("idQR");
+            $table->integer("status");
+            $table->integer("tableNumber");
             $table->timestamps();
         });
     }
