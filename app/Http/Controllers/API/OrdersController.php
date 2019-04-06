@@ -6,7 +6,7 @@ use App\Check;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class Checkontroller extends Controller
+class OrdersController extends Controller
 {
     /**
      * Display a listing of the resource.

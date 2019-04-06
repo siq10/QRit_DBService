@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 
 
-class Check 
+class Product 
 {
     use Notifiable;
 
@@ -14,7 +14,7 @@ class Check
      *
      * @var array
      */
-    
+
     
     
 }

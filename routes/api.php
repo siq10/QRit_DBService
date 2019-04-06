@@ -68,6 +68,7 @@ Route:: resource('menu','API\MenuController')->only(['index','show','store','upd
 
 
 
+
 //ORDERS
 Route:: resource('orders','API\OrdersController')->only(['index','show','store','update','destroy']);
 
