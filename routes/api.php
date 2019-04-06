@@ -32,11 +32,21 @@ Route::post('/login', 'AuthController@login');
 Route::post('/logout', 'AuthController@logout');
 
 
+
+
+
+
+
 // PLACES
 Route::resource ('places','API\PlacesController')->only(['index','show','store','update','destroy']);
+
+
 //1
 //5 get places, available tables for employer client
 //9 get place status
+
+
+
 //RATINGS
 
 
@@ -45,6 +55,11 @@ Route::resource ('places','API\PlacesController')->only(['index','show','store',
 // TABLES
 Route::resource('places.tables','API\PlacesController')->only(['index','show','store','update','destroy']);
 //2
+
+
+
+
+
 
 Route:: resource ('places.menu','API\PlacesController')->only(['index','show','store','update','destroy']);	
 Route:: resource ('places.tables.orders','API\PlacesController')->only(['index','show','store','update','destroy']);	
