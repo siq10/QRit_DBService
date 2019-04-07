@@ -3,9 +3,11 @@
 namespace App;
 
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Model;
 
 
-class Table 
+
+class Table extends Model
 {
     use Notifiable;
 

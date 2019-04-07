@@ -4,7 +4,11 @@ namespace App\Http\Controllers\API;
 
 use App\Place;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
+use DB;
+
+
 
 class PlacesController extends Controller
 {
@@ -16,10 +20,30 @@ class PlacesController extends Controller
     public function index()
     {
         
-        $places = Place::all();
-        return view('places.index')->with('places',$places);
+       $places = Place::all();
+
+
+       //return response()->json(['name'=>'stef'],201);
+       return response()->json($places)->setStatusCode(Response::HTTP_OK); //HTTP_OK=200;
+
+
 
     }
+
+
+
+    public function tables()
+    {
+        
+       $places = Place::all();
+       $data = DB::table('places')->where('availableSlots', '=', 30)->get();
+        //$data = DB::table('places')->where('name', '=', "{$name}")->get();
+        return response()->json($data)->setStatusCode(Response::HTTP_OK); 
+
+    }
+
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -48,10 +72,26 @@ class PlacesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id) // $name
     {
-        $place= Place::find($id);
-        return view('place.show')->with('place',$place);
+       
+       /*
+        if ($request->user()->hasRole('client-NOTauth')) {
+           // do smth ONLY FOR registered CLIENTS
+        }
+
+        if ($request->user()->hasRole('client-auth')) {
+            // do smth for unregistered clients
+        }
+    */
+        $places= Place::find($id);
+        $data = DB::table('places')->where('id', '=', "{$id}")->get();
+        //$data = DB::table('places')->where('name', '=', "{$name}")->get();
+        return response()->json($data)->setStatusCode(Response::HTTP_OK); 
+    
+        //return view('electronice.show')->with('product',$product)->with('notif',$notify);
+
+
     }
 
     /**

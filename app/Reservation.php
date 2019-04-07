@@ -3,9 +3,10 @@
 namespace App;
 
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Model;
 
 
-class Reservation 
+class Reservation extends Model
 {
     use Notifiable;
 
