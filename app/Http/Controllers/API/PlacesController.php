@@ -30,7 +30,7 @@ class PlacesController extends Controller
 
     }
 
-
+/*
 
     public function tables()
     {
@@ -42,7 +42,7 @@ class PlacesController extends Controller
 
     }
 
-
+*/
 
 
     /**
@@ -52,7 +52,7 @@ class PlacesController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -63,7 +63,37 @@ class PlacesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         $this->validate($request, [
+            'owners_id'=>'required',
+            'type'=> 'required',
+            'name' => 'required',
+            'address' => 'required',
+            'city' => 'required',
+            'country' => 'required',
+            'totalSlots' => 'required',          
+            'availableSlots' => 'required',     
+            'status' => 'required',
+            'zipcode' => 'required',
+            'availableTables' => 'required',
+
+        ]);
+
+        $place = new Place;
+        $place->owners_id=$request->owners_id;
+        $place->type=$request->type;
+        $place->name=$request->name;
+        $place->address=$request->address;
+        $place->city=$request->city;
+        $place->country=$request->country;
+        $place->totalSlots =$request->totalSlots;
+        $place->availableSlots=$request->availableSlots;
+        $place->status=$request->status;
+        $place->zipcode=$request->zipcode;
+        $place->availableTables=$request->availableTables;
+        $place->save();
+
+        return response()->json($place)->setStatusCode(Response::HTTP_CREATED); 
+
     }
 
     /**

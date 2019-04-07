@@ -87,7 +87,7 @@ Route::resource('QR.places.tables','API\QRController')-> only(['index','show','s
 //7 post delete put
 
 // MENU
-Route:: resource('menu','API\MenuController')->only(['index','show','store','update','destroy']);
+Route:: resource('places.products','API\ProductController')->only(['index','show','store','update','destroy']);
 
 
 
