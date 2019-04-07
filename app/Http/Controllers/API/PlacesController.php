@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Places;
+use App\Place;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -15,6 +15,19 @@ class PlacesController extends Controller
      */
     public function index()
     {
+        
+        $places = Place::all();
+        return view('places.index')->with('places',$places);
+
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
         //
     }
 
@@ -26,24 +39,28 @@ class PlacesController extends Controller
      */
     public function store(Request $request)
     {
-        $user = new User;
-        $user->email = $request->email;
-        $user->firstname = $request->firstname;
-        $user->lastname = $request->lastname;
-        $user->password = $request->password;
-        $user->save();
-
-        $token = $this->authorizeUser($user);
-        return response()->json($token);
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\User  $user
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show($id)
+    {
+        $place= Place::find($id);
+        return view('place.show')->with('place',$place);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
     {
         //
     }
@@ -52,21 +69,21 @@ class PlacesController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\User  $user
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, $id)
     {
-        return $this->login($request);
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\User  $user
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy($id)
     {
         //
     }
