@@ -29,7 +29,16 @@ class TablesController extends Controller
      */
     public function store(Request $request)
     {
-       
+        $table = new Table;
+        $table->places_id=$request->places_id;
+        $table->slots=$request->slots;
+        $table->idQR=$request->idQR;
+        $table->status=$request->status;
+        $table->tableNumber=$request->tableNumber;
+
+        $table->save();
+
+        return response()->json($table)->setStatusCode(Response::HTTP_CREATED); 
     }
 
     /**
@@ -38,9 +47,12 @@ class TablesController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show($id)
     {
-        //
+        $tables= Table::find($id);
+        $data = DB::table('tables')->where('id', '=', "{$id}")->get();
+        //$data = DB::table('places')->where('name', '=', "{$name}")->get();
+        return response()->json($data)->setStatusCode(Response::HTTP_OK); 
     }
 
     /**

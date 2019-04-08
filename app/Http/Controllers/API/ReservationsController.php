@@ -1,25 +1,24 @@
 <?php
 
-namespace App\Http\Controllers\API\places;
+namespace App\Http\Controllers\API;
 
-use App\Table;
-use App\Place;
+use App\Reservation;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
 use DB;
 
-class TablesController extends Controller
+class ReservationsController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($places_id)
+    public function index()
     {
-       $tables = Table::all();
-       return response()->json($tables)->setStatusCode(Response::HTTP_OK); //HTTP_OK=200;
+       //$res = Reservation::all();
+       //return response()->json($res)->setStatusCode(Response::HTTP_OK); //HTTP_OK=200;
     }
 
     /**
@@ -29,8 +28,26 @@ class TablesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
+
     {
-       
+
+
+         $this->validate($request, [
+            'places_id'=>'required',
+            'status' => 'required',
+            'client_id' => 'required',
+           
+        ]);
+
+        $res = new Reservation;
+        $res->places_id=$request->places_id;
+        $res->client_id =$request->client_id;
+        $res->status=$request->status;
+        $res->save();
+
+         return response()->json($res)->setStatusCode(Response::HTTP_CREATED); 
+        //$token = $this->authorizeUser($user);
+        //return response()->json($token);
     }
 
     /**
@@ -39,14 +56,9 @@ class TablesController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show( $places_id, $tableNumber)
+    public function show()
     {
-        $tables= Table::find($tableNumber);
-        //$table->place()->associate($place);
-        $data = DB::table('tables')->where('tableNumber', '=', "{$tableNumber}")->get();
-        //$data = DB::table('places')->where('name', '=', "{$name}")->get();
-        
-        return response()->json($data)->setStatusCode(Response::HTTP_OK); 
+        //
     }
 
     /**

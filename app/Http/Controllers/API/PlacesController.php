@@ -144,7 +144,21 @@ class PlacesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        
+        $request->validate([
+        'availableSlots'=>'required',
+        //'availableTables'=> 'required',
+      ]);
+
+      $place = Place::find($id);
+      //$place->availableTables = $request->get('availableTables');
+      //$place->availableSlots = $request->get('availableSlots');
+      $place->availableSlots = $request->get('availableSlots');
+      $place->save();
+
+       return response()->json($place)->setStatusCode(Response::HTTP_OK);  //200
+
+    
     }
 
     /**

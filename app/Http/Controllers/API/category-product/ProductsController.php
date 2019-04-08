@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Reservation;
+use App\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class ReservationController extends Controller
+class ProductsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -26,12 +26,12 @@ class ReservationController extends Controller
      */
     public function store(Request $request)
     {
-        $res = new Reservation;
-        $res->id = $request->id;
-        $res->place=$request->place;
-        $res->tableNr = $request->tableNr;
+        $book = new Book;
+        $book->id = $request->id;
+        $book->place=$request->place;
+        $book->tableNr = $request->tableNr;
         
-        $res->save();
+        $book->save();
 
         //$token = $this->authorizeUser($user);
         //return response()->json($token);

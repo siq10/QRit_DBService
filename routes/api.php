@@ -54,6 +54,9 @@ Route::resource ('places','API\PlacesController')->only(['index','show','store',
 
 // TABLES
 Route::resource('tables','API\TablesController')->only(['index','show','store','update','destroy']);
+
+
+
 Route::resource('places.tables','API\places\TablesController')->only(['index','show','store','update','destroy']);
 //2
 
@@ -62,17 +65,20 @@ Route::resource('places.tables','API\places\TablesController')->only(['index','s
 
 
 
+
 Route:: resource ('places.menu','API\PlacesController')->only(['index','show','store','update','destroy']);	
+
+
 Route:: resource ('places.tables.orders','API\PlacesController')->only(['index','show','store','update','destroy']);	
 // Route:: resource ('places.orders','API\PlacesController')->only(['index','show','store','update','destroy']);	
 
 
 //RESERVATION
 
-Route::resource('reservation','API\ReservationController')-> only(['index','show','store','update','destroy']);
+Route::resource('reservations','API\ReservationsController')-> only(['index','show','store','update','destroy']);
 //3 post
 //4 put
-// Route::resource('reservation.places.tables','API\ReservationController')-> only(['index','show','store','update','destroy']);
+// Route::resource('reservations.places.tables','API\ReservationsController')-> only(['index','show','store','update','destroy']);
 
 
 
@@ -99,7 +105,7 @@ Route:: resource('orders','API\OrdersController')->only(['index','show','store',
 //change status to order
 //11 put waiter id for order
 //12 put order status 	
-Route:: resource('orders.products','API\OrdersController')->only(['index','show','store','update','destroy']);
+Route:: resource('orders.products','API\ProductsController')->only(['index','show','store','update','destroy']);
 //4 post order-product
 // $order->attach();
 

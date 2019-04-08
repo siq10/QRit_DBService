@@ -1,4 +1,3 @@
-
 <?php
 
 namespace App;
@@ -17,6 +16,15 @@ class Order extends Model
      *
      * @var array
      */
+
+
+     public function products()
+    {
+        return $this->belongsToMany('products', 'order_product', 'order_id', 'product_id');
+    }
+   
+        
+      
     
     
     

@@ -1,26 +1,25 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\orders;
 
-use App\Order;
+use App\Product;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
+use App\Http\Controllers\Controller;
 use DB;
 
-class OrdersController extends Controller
+class ProductsController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($order_id)
     {
-         $orders = Order::all();
-       return response()->json($orders)->setStatusCode(Response::HTTP_OK); //HTTP_OK=200;
+       $products = Product::all();
+       return response()->json($products)->setStatusCode(Response::HTTP_OK); //HTTP_OK=200;
     }
-    
 
     /**
      * Store a newly created resource in storage.
@@ -28,26 +27,22 @@ class OrdersController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request,$order_id)
     {
-     
-
-        $order = new Order;
-        $order->client_id=$request->client_id;
-        $order->waiter_id=$request->$request->waiter_id;
-        $order->table_id=$request->table_id;
-        $order->status=$request->status;
-       
-
-        $order = Order::find($order_id);
-        $order->products()->attach ($order_id,['status' => $status]);
-
-        $order->save();
+        dd("it here");
+        $product = new Product;
+        $product->places_id=$request->places_id;
+        $product->order_id=$order_id;
+        $product->name=$request->$request->name;
+        $product->price=$request->price;
+        $product->status=$request->status;
+        $product->description=$request->description;
 
 
+        $product->save();
+        
 
-        return response()->json($order)->setStatusCode(Response::HTTP_CREATED); 
-
+        return response()->json($product)->setStatusCode(Response::HTTP_CREATED); 
 
         //$token = $this->authorizeUser($user);
         //return response()->json($token);
@@ -59,14 +54,11 @@ class OrdersController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-        
-        
+    public function show($id,$order_id)
     {
-
-         $order= Order::find($id);
+         $product= Product::find($id);
         //$table->place()->associate($place);
-        $data = DB::table('orders')->where('id', '=', "{$id}")->get();
+        $data = DB::table('products')->where('id', '=', "{$id}")->get();
         //$data = DB::table('places')->where('name', '=', "{$name}")->get();
         
         return response()->json($data)->setStatusCode(Response::HTTP_OK); 

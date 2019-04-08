@@ -26,13 +26,7 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-        $book = new Book;
-        $book->id = $request->id;
-        $book->place=$request->place;
-        $book->tableNr = $request->tableNr;
-        
-        $book->save();
-
+       
         //$token = $this->authorizeUser($user);
         //return response()->json($token);
     }
@@ -43,7 +37,7 @@ class ProductsController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show()
     {
         //
     }
@@ -55,7 +49,7 @@ class ProductsController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request)
     {
         //return $this->login($request);
     }
@@ -66,7 +60,7 @@ class ProductsController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy()
     {
         //
     }
