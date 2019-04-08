@@ -21,9 +21,9 @@ class Table extends Model
         return $this->belongsTo('App\Place');
     }
     
-     public function menu()
+    /* public function menu()
     {
         return $this->hasOne('App\Book');
     }
-    
+    */
 }

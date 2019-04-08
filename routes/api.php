@@ -53,7 +53,8 @@ Route::resource ('places','API\PlacesController')->only(['index','show','store',
 
 
 // TABLES
-Route::resource('places.tables','API\PlacesController')->only(['index','show','store','update','destroy']);
+Route::resource('tables','API\TablesController')->only(['index','show','store','update','destroy']);
+Route::resource('places.tables','API\places\TablesController')->only(['index','show','store','update','destroy']);
 //2
 
 
