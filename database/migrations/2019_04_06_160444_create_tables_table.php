@@ -15,12 +15,11 @@ class CreateTablesTable extends Migration
     {
         Schema::create('tables', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('places_id')->unsigned();
-            $table->foreign('places_id')->references('id')->on('places');
+            $table->bigInteger('place_id')->unsigned();
+            $table->foreign('place_id')->references('id')->on('places');
             $table->integer("slots");
-            $table->integer("idQR");
             $table->integer("status");
-            $table->integer("tableNumber");
+            $table->integer("number");
             $table->timestamps();
         });
     }

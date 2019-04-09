@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\API;
 
-use Illuminate\Support\Facades\Validator;
-use App\Place;
+use App\Owner;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
-class PlacesController extends Controller
+class OwnersController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,9 +17,11 @@ class PlacesController extends Controller
     public function index()
     {
         return response()
-            ->json(Place::all())
+            ->json(Owner::all())
             ->setStatusCode(200);
     }
+
+
 
     /**
      * Store a newly created resource in storage.
@@ -30,45 +32,28 @@ class PlacesController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'owner_id'=>'required',
-            'type'=> 'required',
-            'name' => 'required',
-            'address' => 'required',
-            'city' => 'required',
-            'country' => 'required',
-            'totalSlots' => 'required',
-//            'status' => 'required',
-            'zipcode' => 'required',
-//            'availableTables' => 'required',
+
         ]);
         if ($validator->fails()) {
             return response()->json(['errors'=>$validator->errors()],422);
         }
-        $place = new Place;
+        $owner = new Owner;
 //        dd($request->post());
-        $place->owner_id = $request->owner_id;
-        $place->type = $request->type;
-        $place->name = $request->name;
-        $place->address = $request->address;
-        $place->city = $request->city;
-        $place->country = $request->country;
-        $place->zipcode = $request->zipcode;
-        $place->totalSlots = $request->totalSlots;
-        $place->availableSlots = $request->totalSlots;
+        $owner->user_id = $request->user_id;
         try {
-            $place->save();
+            $owner->save();
             return response()
                 ->json()
                 ->setStatusCode(201, "Resource created")
                 ->withHeaders([
-                "Location" => $request->url().'/'.$place->id
+                    "Location" => $request->url().'/'.$owner->id
                 ]);
         } catch (\Illuminate\Database\QueryException $ex) {
 //            dd($ex->getMessage());
-            \Log::error('Encountered while trying to store a Place!', ['context' => $ex->getMessage()]);
+            \Log::error('Encountered while trying to store an Owner!', ['context' => $ex->getMessage()]);
             return response()
-                ->json(["message" => "Unknown error occured while processing data!",
-                    'reason' => "unknown"])
+                ->json(["message" => "Provided user is incorrect. Most likely a server processing error while storing owner!",
+                    'reason' => "user_id"])
                 ->setStatusCode(422);
         }
     }
@@ -76,13 +61,13 @@ class PlacesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Place  $place
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $place = Place::find($id);
-        if(is_null($place))
+        $owner = Owner::find($id);
+        if(is_null($owner))
         {
             return response()
                 ->json()
@@ -91,16 +76,17 @@ class PlacesController extends Controller
         else
         {
             return response()
-                ->json($place)
+                ->json($owner)
                 ->setStatusCode(200);
         }
     }
+
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Place  $place
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -112,22 +98,14 @@ class PlacesController extends Controller
             return response()->json(['errors'=>$validator->errors()],422);
         }
 
-        $place = Place::find($id);
-        if(is_null($place))
+        $owner = Owner::find($id);
+        if(is_null($owner))
         {
-            $place = new Place;
-            $place->id = $id;
-            $place->owner_id = $request->owner_id;
-            $place->type = $request->type;
-            $place->name = $request->name;
-            $place->address = $request->address;
-            $place->city = $request->city;
-            $place->country = $request->country;
-            $place->zipcode = $request->zipcode;
-            $place->totalSlots = $request->totalSlots;
-            $place->availableSlots = $request->totalSlots;
+            $owner = new Owner;
+            $owner->id = $id;
+            $owner->user_id = $request->user_id;
             try {
-                $place->save();
+                $owner->save();
                 return response()
                     ->json()
                     ->setStatusCode(201);
@@ -137,7 +115,7 @@ class PlacesController extends Controller
             }
             catch (\Illuminate\Database\QueryException $ex) {
 //            dd($ex->getMessage());
-                \Log::error('Encountered while trying to store a Place!', ['context' => $ex->getMessage()]);
+                \Log::error('Encountered while trying to store an Owner!', ['context' => $ex->getMessage()]);
                 return response()
                     ->json(["message" => "Unknown error occured while processing data!",
                         'reason' => "unknown"])
@@ -146,18 +124,10 @@ class PlacesController extends Controller
         }
         else
         {
-            $place->id = $id;
-            $place->owner_id = $request->owner_id;
-            $place->type = $request->type;
-            $place->name = $request->name;
-            $place->address = $request->address;
-            $place->city = $request->city;
-            $place->country = $request->country;
-            $place->zipcode = $request->zipcode;
-            $place->totalSlots = $request->totalSlots;
-            $place->availableSlots = $request->totalSlots;
+            $owner->id = $id;
+            $owner->user_id = $request->user_id;
             try{
-                $place->save();
+                $owner->save();
                 return response()
                     ->json()
                     ->setStatusCode(200);
@@ -166,7 +136,7 @@ class PlacesController extends Controller
 //                ]);
             } catch (\Illuminate\Database\QueryException $ex) {
 //            dd($ex->getMessage());
-                \Log::error('Encountered while trying to store a Place!', ['context' => $ex->getMessage()]);
+                \Log::error('Encountered while trying to store an Owner!', ['context' => $ex->getMessage()]);
                 return response()
                     ->json(["message" => "Unknown error occured while processing data!",
                         'reason' => "unknown"])
@@ -178,13 +148,13 @@ class PlacesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Place  $place
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $place = Place::find($id);
-        if(is_null($place))
+        $owner = Owner::find($id);
+        if(is_null($owner))
         {
             return response()
                 ->json()
@@ -192,7 +162,7 @@ class PlacesController extends Controller
         }
         else
         {
-            $place->delete();
+            $owner->delete();
             return response()
                 ->json()
                 ->setStatusCode(204);

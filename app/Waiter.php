@@ -4,28 +4,21 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-
-class Reservation extends Model
+class Waiter extends Model
 {
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $connection = 'mysql_appuser';
 
-
-
-    public function client()
+    public function user()
     {
-        return $this->belongsTo('App\Client');
+        return $this->belongsTo('App\User');
     }
 
     public function place()
     {
         return $this->belongsTo('App\Place');
     }
-    
-    
+    public function orders()
+    {
+        return $this->hasMany('App\Order');
+    }
 }

@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Check;
+use App\Order;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class OrdersController extends Controller
 {
@@ -15,7 +16,7 @@ class OrdersController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(Order::all());
     }
 
     /**
@@ -26,48 +27,151 @@ class OrdersController extends Controller
      */
     public function store(Request $request)
     {
-     /*   $book = new Book;
-        $book->id = $request->id;
-        $book->place=$request->place;
-        $book->tableNr = $request->tableNr;
-        
-        $book->save();
-*/
-        //$token = $this->authorizeUser($user);
-        //return response()->json($token);
+        $validator = Validator::make($request->all(), [
+            'client_id'=>'required',
+            'waiter_id'=> 'required',
+            'table_id' => 'required',
+            'status' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['errors'=>$validator->errors()],422);
+        }
+        $order = new Order;
+        $order->client_id = $request->client_id;
+        $order->table_id = $request->table_id;
+        $order->status = $request->status;
+        $order->waiter_id = $request->waiter_id;
+        try {
+            $order->save();
+            return response()
+                ->json()
+                ->setStatusCode(201, "Resource created")
+                ->withHeaders([
+                    "Location" => $request->url().'/'.$order->id
+                ]);
+        } catch (\Illuminate\Database\QueryException $ex) {
+//            dd($ex->getMessage());
+            \Log::error('Encountered while trying to store an Order!', ['context' => $ex->getMessage()]);
+            return response()
+                ->json(["message" => "Unknown error occured while processing data!",
+                    'reason' => "unknown"])
+                ->setStatusCode(422);
+        }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\User  $user
+     * @param  \App\Order $order
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show($id)
     {
-        //
+        $order = Order::find($id);
+        if(is_null($order))
+        {
+            return response()
+                ->json()
+                ->setStatusCode(404);
+        }
+        else
+        {
+            return response()
+                ->json($order)
+                ->setStatusCode(200);
+        }
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\User  $user
+     * @param  \App\Order $order
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, $id)
     {
-        //return $this->login($request);
+        $validator = Validator::make($request->all(), [
+
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['errors'=>$validator->errors()],422);
+        }
+
+        $order = Order::find($id);
+        if(is_null($order))
+        {
+            $order = new Order;
+            $order->id = $id;
+            $order->client_id = $request->client_id;
+            $order->table_id = $request->table_id;
+            $order->status = $request->status;
+            $order->waiter_id = $request->waiter_id;
+            try {
+                $order->save();
+                return response()
+                    ->json()
+                    ->setStatusCode(201);
+//                 ->withHeaders([
+//                "Location" => $request->url()
+//                ]);
+            }
+            catch (\Illuminate\Database\QueryException $ex) {
+//            dd($ex->getMessage());
+                \Log::error('Encountered while trying to store an Order!', ['context' => $ex->getMessage()]);
+                return response()
+                    ->json(["message" => "Unknown error occured while processing data!",
+                        'reason' => "unknown"])
+                    ->setStatusCode(422);
+            }
+        }
+        else
+        {
+            $order->client_id = $request->client_id;
+            $order->table_id = $request->table_id;
+            $order->status = $request->status;
+            $order->waiter_id = $request->waiter_id;
+            try {
+                $order->save();
+                return response()
+                    ->json()
+                    ->setStatusCode(200);
+//                ->withHeaders([
+//                    "Location" => $request->url()
+//                ]);
+            }
+            catch (\Illuminate\Database\QueryException $ex) {
+//            dd($ex->getMessage());
+                \Log::error('Encountered while trying to store an Order!', ['context' => $ex->getMessage()]);
+                return response()
+                    ->json(["message" => "Unknown error occured while processing data!",
+                        'reason' => "unknown"])
+                    ->setStatusCode(422);
+            }
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\User  $user
+     * @param  \App\Order $order
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy($id)
     {
-        //
+        $order = Order::find($id);
+        if(is_null($order))
+        {
+            return response()
+                ->json()
+                ->setStatusCode(404);
+        }
+        else
+        {
+            $order->delete();
+            return response()
+                ->json()
+                ->setStatusCode(204);
+        }
     }
 }

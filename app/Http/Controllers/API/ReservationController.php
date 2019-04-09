@@ -5,8 +5,9 @@ namespace App\Http\Controllers\API;
 use App\Reservation;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
 
-class ReservationController extends Controller
+class ReservationsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +16,8 @@ class ReservationController extends Controller
      */
     public function index()
     {
-        //
+        $res = Reservation::all();
+        return response()->json($res)->setStatusCode(Response::HTTP_OK); //HTTP_OK=200;
     }
 
     /**
@@ -25,14 +27,24 @@ class ReservationController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
+
     {
+
+
+        $this->validate($request, [
+            'places_id'=>'required',
+            'status' => 'required',
+            'client_id' => 'required',
+
+        ]);
+
         $res = new Reservation;
-        $res->id = $request->id;
-        $res->place=$request->place;
-        $res->tableNr = $request->tableNr;
-        
+        $res->places_id=$request->places_id;
+        $res->client_id =$request->client_id;
+        $res->status=$request->status;
         $res->save();
 
+        return response()->json($res)->setStatusCode(Response::HTTP_CREATED);
         //$token = $this->authorizeUser($user);
         //return response()->json($token);
     }
@@ -43,7 +55,7 @@ class ReservationController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show()
     {
         //
     }
@@ -55,7 +67,7 @@ class ReservationController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request)
     {
         //return $this->login($request);
     }
@@ -66,7 +78,7 @@ class ReservationController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy()
     {
         //
     }

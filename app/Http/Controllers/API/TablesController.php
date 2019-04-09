@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Tables;
+use App\Table;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
 
 class TablesController extends Controller
 {
@@ -15,7 +16,8 @@ class TablesController extends Controller
      */
     public function index()
     {
-        //
+        $tables = Table::all();
+        return response()->json($tables)->setStatusCode(Response::HTTP_OK); //HTTP_OK=200;
     }
 
     /**
@@ -26,15 +28,16 @@ class TablesController extends Controller
      */
     public function store(Request $request)
     {
-        $user = new User;
-        $user->email = $request->email;
-        $user->firstname = $request->firstname;
-        $user->lastname = $request->lastname;
-        $user->password = $request->password;
-        $user->save();
+        $table = new Table;
+        $table->places_id=$request->places_id;
+        $table->slots=$request->slots;
+        $table->idQR=$request->idQR;
+        $table->status=$request->status;
+        $table->tableNumber=$request->tableNumber;
 
-        $token = $this->authorizeUser($user);
-        return response()->json($token);
+        $table->save();
+
+        return response()->json($table)->setStatusCode(Response::HTTP_CREATED);
     }
 
     /**
@@ -43,9 +46,12 @@ class TablesController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show($id)
     {
-        //
+        $tables= Table::find($id);
+        $data = DB::table('tables')->where('id', '=', "{$id}")->get();
+        //$data = DB::table('places')->where('name', '=', "{$name}")->get();
+        return response()->json($data)->setStatusCode(Response::HTTP_OK);
     }
 
     /**
@@ -55,9 +61,9 @@ class TablesController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request)
     {
-        return $this->login($request);
+        //return $this->login($request);
     }
 
     /**
@@ -66,7 +72,7 @@ class TablesController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy()
     {
         //
     }

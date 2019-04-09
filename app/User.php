@@ -10,6 +10,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
+    protected $connection = 'mysql_appuser';
 
     /**
      * The attributes that are mass assignable.
@@ -53,5 +54,20 @@ class User extends Authenticatable implements JWTSubject
         if ( !empty($password) ) {
             $this->attributes['password'] = bcrypt($password);
         }
+    }
+
+    public function client()
+    {
+        return $this->hasOne('App\Client');
+    }
+
+    public function owner()
+    {
+        return $this->hasOne('App\Owner');
+    }
+
+    public function waiter()
+    {
+        return $this->hasOne('App\Waiter');
     }
 }

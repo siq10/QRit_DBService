@@ -2,12 +2,12 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
 
 
-class Table 
+use Illuminate\Database\Eloquent\Model;
+
+class Table extends Model
 {
-    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -18,10 +18,9 @@ class Table
     {
         return $this->belongsTo('App\Place');
     }
-    
-     public function menu()
+    public function orders()
     {
-        return $this->hasOne('App\Book');
+        return $this->hasMany('App\Order');
     }
     
 }

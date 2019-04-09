@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\Orders;
 
 use App\Product;
+use App\Order;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -14,10 +15,11 @@ class ProductsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
+        $order = Order::find($id);
         return response()
-            ->json(Product::all())
+            ->json($order->products())
             ->setStatusCode(200);
     }
 
@@ -27,40 +29,27 @@ class ProductsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request,$order_id)
     {
         $validator = Validator::make($request->all(), [
-            'places_id'=>'required',
-            'name'=> 'required',
-            'price' => 'required',
-            'status' => 'required',
-            'description' => 'required'
         ]);
         if ($validator->fails()) {
             return response()->json(['errors'=>$validator->errors()],422);
         }
-        $product = new Product;
-//        dd($request->post());
-        $product->place_id = $request->place_id;
-        $product->name = $request->name;
-        $product->price = $request->price;
-        $product->status = $request->status;
-        $product->description = $request->description;
-        try {
-            $product->save();
+        $order = Order::find($order_id);
+        if(is_null($order))
+        {
+            return response()->json(NULL,404);
+        }
+        else
+        {
+            $order->products()->attach($request->product_id);
             return response()
                 ->json()
                 ->setStatusCode(201, "Resource created")
                 ->withHeaders([
-                    "Location" => $request->url().'/'.$product->id
+                    "Location" => $request->url().'/'.$request->product_id
                 ]);
-        } catch (\Illuminate\Database\QueryException $ex) {
-//            dd($ex->getMessage());
-            \Log::error('Encountered while trying to store a Product!', ['context' => $ex->getMessage()]);
-            return response()
-                ->json(["message" => "Unknown error occured while processing data!",
-                    'reason' => "unknown"])
-                ->setStatusCode(422);
         }
     }
 
@@ -70,20 +59,34 @@ class ProductsController extends Controller
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($order_id,$product_id)
     {
-        $product = Product::find($id);
-        if(is_null($product))
+        $order = Order::find($order_id);
+        if(is_null($order))
         {
             return response()
                 ->json()
                 ->setStatusCode(404);
         }
+        $products = $order->products()
+            ->where('product_id',$product_id)
+            ->get();
+        foreach($products as $item)
+        {
+            unset($item["pivot"]);
+        }
+//        dd($products);
+        if(count($products))
+        {
+            return response()
+                ->json($products)
+                ->setStatusCode(200);
+        }
         else
         {
             return response()
-                ->json($product)
-                ->setStatusCode(200);
+                ->json()
+                ->setStatusCode(404);
         }
     }
 

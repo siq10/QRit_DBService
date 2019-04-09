@@ -16,9 +16,9 @@ class CreateWaitersTable extends Migration
         Schema::create('waiters', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('user_id')->unsigned();
-            $table->bigInteger('places_id')->unsigned();
+            $table->bigInteger('place_id')->unsigned();
             $table->foreign('user_id')->references('id')-> on('users');
-            $table->foreign('places_id')->references('id')->on ('places');
+            $table->foreign('place_id')->references('id')->on ('places');
             $table->timestamps();
         });
     }

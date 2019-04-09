@@ -15,7 +15,9 @@ class UserController extends AuthController
      */
     public function index()
     {
-        //
+        return response()
+            ->json(User::all())
+            ->setStatusCode(200);
     }
 
     /**
@@ -26,15 +28,26 @@ class UserController extends AuthController
      */
     public function store(Request $request)
     {
-        $user = new User;
-        $user->email = $request->email;
-        $user->firstname = $request->firstname;
-        $user->lastname = $request->lastname;
-        $user->password = $request->password;
-        $user->save();
-
-        $token = $this->authorizeUser($user);
-        return response()->json($token);
+            $user = new User;
+            $user->email = $request->email;
+            $user->firstname = $request->firstname;
+            $user->lastname = $request->lastname;
+            $user->username = $request->username;
+            $user->password = $request->password;
+        try{
+            $user->save();
+            return response()
+                ->json($user->only('id','email','firstname','lastname', 'username'))
+                ->setStatusCode(201,"Resource created");
+         } catch(\Illuminate\Database\QueryException $ex){
+            \Log::error('Encountered while trying to store an User!', ['context' => $ex->getMessage()]);
+            return response()
+                ->json(["message" => "Email must be unique!",
+                        'reason' => "email"])
+                ->setStatusCode(422);
+        }
+//        $token = $this->authorizeUser($user);
+//        return response()->json($token);
     }
 
     /**
