@@ -30,6 +30,8 @@
 !database/
 !database/**
 
+!Proiect/
+!Proiect/**
 !.env.example
 
 !composer.json
