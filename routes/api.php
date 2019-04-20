@@ -32,7 +32,7 @@ Route::middleware(['authorization'])->group(function () {
 
     Route::resource ('places','API\PlacesController')->only(['index','show','store','update','destroy']);
 
-    Route::resource('reservation','API\ReservationsController')-> only(['index','show','store','update','destroy']);
+    Route::resource('reservations','API\ReservationsController')-> only(['index','show','store','update','destroy']);
 
     Route:: resource('orders.products','API\Orders\ProductsController')->only(['index','show','store','update','destroy']);
 
