@@ -28,7 +28,7 @@ Route::middleware(['authorization'])->group(function () {
 
     Route:: resource('owners','API\OwnersController')->only(['index','show','store','update','destroy']);
 
-    Route::resource('users', 'API\UserController')->only(['index','show', 'store', 'update', 'destroy']);
+    Route::resource('users', 'API\UsersController')->only(['index','show', 'store', 'update', 'destroy']);
 
     Route::resource ('places','API\PlacesController')->only(['index','show','store','update','destroy']);
 
@@ -39,11 +39,9 @@ Route::middleware(['authorization'])->group(function () {
     Route:: resource('products','API\ProductsController')->only(['index','show','store','update','destroy']);
 });
 // USERS
-//Route::post('/register', 'AuthController@register');
-//Route::post('/login', 'AuthController@login');
-//Route::post('/logout', 'AuthController@logout');
+
 //------------------------------------------------------ hmm
-/*
-Route::resource('authentication', 'API/AuthController')->only(['show','store','update','destroy'])
-Route::resource('authorization', 'API/AuthController')->only(['show','store','update','destroy'])
-*/
+
+Route::resource('authentication', 'API\AuthenticationsController')->only(['show','store','update','destroy']);
+Route::resource('authorization', 'API\AuthorizationsController')->only(['show','store','update','destroy']);
+
