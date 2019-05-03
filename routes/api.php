@@ -18,8 +18,9 @@ Route::get($uri, function () {
     return response()->json("Laravel sent this baby!");
 })->middleware('authorization');
 
+Route::post('users','API\UsersController@store');
 
-Route::middleware(['authorization'])->group(function () {
+Route::group(['middleware' => 'authorization'], function () {
     Route:: resource('orders','API\OrdersController')->only(['index','show','store','update','destroy']);
 
     Route:: resource('clients','API\ClientsController')->only(['index','show','store','update','destroy']);
@@ -28,7 +29,7 @@ Route::middleware(['authorization'])->group(function () {
 
     Route:: resource('owners','API\OwnersController')->only(['index','show','store','update','destroy']);
 
-    Route::resource('users', 'API\UsersController')->only(['index','show', 'store', 'update', 'destroy']);
+    Route::resource('users', 'API\UsersController')->only(['index','show', 'update', 'destroy']);
 
     Route::resource ('places','API\PlacesController')->only(['index','show','store','update','destroy']);
 

@@ -76,11 +76,11 @@ class AuthenticationsController extends Controller
         ]);
         $jwsSerializerManager = SSerializer\JWSSerializerManager::create([
             new SSerializer\JSONFlattenedSerializer($jsonConverter),
-//            new SSerializer\CompactSerializer($jsonConverter),
+            new SSerializer\CompactSerializer($jsonConverter),
         ]);
         $jweSerializerManager = ESerializer\JWESerializerManager::create([
             new ESerializer\JSONFlattenedSerializer($jsonConverter),
-//            new ESerializer\CompactSerializer($jsonConverter),
+            new ESerializer\CompactSerializer($jsonConverter),
         ]);
 
 
@@ -109,8 +109,10 @@ class AuthenticationsController extends Controller
             'exp' => time() + 3600,
             'iss' => 'My service',
             'aud' => 'Your application',
-            'username' => "john",
-            'password' => "qwerty"
+//            'username' => "john",
+//            'password' => "qwerty"
+                  'email' => $request->email,
+            'password' => $request->password,
         ]);
 
 
@@ -124,64 +126,66 @@ class AuthenticationsController extends Controller
                 'key'              => $jwk,     // The key used to sign. Mandatory.
                 'protected_header' => ['alg' => 'HS256'], // The protected header. Optional.
             ]],
-//            'jws_compact',
-            'jws_json_flattened',
+            'jws_compact',
+//            'jws_json_flattened',
             // The serialization mode for the JWS
-            ['alg' => 'A256KW', 'enc' => 'A256CBC-HS512'],    // The shared protected header. Optional.
-            ['foo' => 'bar'],                             // The shared unprotected header. Optional.
+            ['alg' => 'A256KW', 'enc' => 'A256CBC-HS512'], // The shared protected header. Optional.
+            [],                             // The shared unprotected header. Optional.
             [[                                            // A list of recipients. 'key' is mandatory.
                 'key'    => $jwk,              // The recipient key.
             ]],
-//            'jwe_compact'                         // The serialization mode for the JWE.
-            'jwe_json_flattened'
+            'jwe_compact'                         // The serialization mode for the JWE.
+//            'jwe_json_flattened'
         );
 
-//        dd($token);
+        return response()
+        ->json($token)
+        ->setStatusCode(201, "JWT created");
 
-        $jwsVerifier = new JWSVerifier(
-            $algorithmManager
-        );
-        $headerCheckerManager = HeaderCheckerManager::create(
-            [
-//                new AlgorithmChecker(['HS256']), // We check the header "alg" (algorithm)
-                new AlgorithmChecker(['A256KW']), // We check the header "alg" (algorithm)
-
-            ],
-            [
-                new JWETokenSupport(), // Adds JWS token type support
-            ]
-        );
-        $headerCheckerManager2 = HeaderCheckerManager::create(
-            [
-                new AlgorithmChecker(['HS256']), // We check the header "alg" (algorithm)
+//        $jwsVerifier = new JWSVerifier(
+//            $algorithmManager
+//        );
+//        $headerCheckerManager = HeaderCheckerManager::create(
+//            [
+////                new AlgorithmChecker(['HS256']), // We check the header "alg" (algorithm)
 //                new AlgorithmChecker(['A256KW']), // We check the header "alg" (algorithm)
-
-            ],
-            [
-                new JWSTokenSupport(), // Adds JWS token type support
-            ]
-        );
-        $jwsLoader = new JWSLoader(
-            $jwsSerializerManager,
-            $jwsVerifier,
-            $headerCheckerManager2
-        );
-
-        $jweDecrypter = new JWEDecrypter(
-            $keyEncryptionAlgorithmManager,
-            $contentEncryptionAlgorithmManager,
-            $compressionMethodManager
-        );
-        $jweLoader = new JWELoader(
-            $jweSerializerManager,
-            $jweDecrypter,
-            $headerCheckerManager
-        );
-        $encryptionKeySet = JWKSet::createFromKeys(array($jwk));
-        $signatureKeySet = JWKSet::createFromKeys(array($jwk));
-        $nestedTokenLoader = new NestedTokenLoader($jweLoader, $jwsLoader);
-        $jws = $nestedTokenLoader->load($token, $encryptionKeySet, $signatureKeySet);
-        dd($jws->getPayload());
+//
+//            ],
+//            [
+//                new JWETokenSupport(), // Adds JWS token type support
+//            ]
+//        );
+//        $headerCheckerManager2 = HeaderCheckerManager::create(
+//            [
+//                new AlgorithmChecker(['HS256']), // We check the header "alg" (algorithm)
+////                new AlgorithmChecker(['A256KW']), // We check the header "alg" (algorithm)
+//
+//            ],
+//            [
+//                new JWSTokenSupport(), // Adds JWS token type support
+//            ]
+//        );
+//        $jwsLoader = new JWSLoader(
+//            $jwsSerializerManager,
+//            $jwsVerifier,
+//            $headerCheckerManager2
+//        );
+//
+//        $jweDecrypter = new JWEDecrypter(
+//            $keyEncryptionAlgorithmManager,
+//            $contentEncryptionAlgorithmManager,
+//            $compressionMethodManager
+//        );
+//        $jweLoader = new JWELoader(
+//            $jweSerializerManager,
+//            $jweDecrypter,
+//            $headerCheckerManager
+//        );
+//        $encryptionKeySet = JWKSet::createFromKeys(array($jwk));
+//        $signatureKeySet = JWKSet::createFromKeys(array($jwk));
+//        $nestedTokenLoader = new NestedTokenLoader($jweLoader, $jwsLoader);
+//        $jws = $nestedTokenLoader->load($token, $encryptionKeySet, $signatureKeySet);
+//        dd($jws->getPayload());
     }
 
     /**
