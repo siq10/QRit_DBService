@@ -21,9 +21,9 @@ Route::get($uri, function () {
 Route::post('users','API\UsersController@store');
 
 Route::group(['middleware' => 'authorization'], function () {
-    Route:: resource('orders','API\OrdersController')->only(['index','show','store','update','destroy']);
+    Route:: resource('orders','API\OrdersController')->only(['index','show','store','update','destroy'])->middleware(\App\Http\Middleware\Waiter::class);
 
-    Route:: resource('clients','API\ClientsController')->only(['index','show','store','update','destroy']);
+    Route:: resource('clients','API\ClientsController')->only(['index','show','store','update','destroy'])->middleware(\App\Http\Middleware\Client::class);
 
     Route:: resource('waiters','API\WaitersController')->only(['index','show','store','update','destroy']);
 

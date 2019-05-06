@@ -175,6 +175,7 @@ class AuthServiceProvider extends ServiceProvider
             }
             catch (\Exception $e)
             {
+                \Log::error('Encountered while trying to authenticate user!', ['context' => $e->getMessage()]);
                 return null;
             }
         });

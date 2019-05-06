@@ -18,6 +18,7 @@ class Authorize
     {
         if(Auth::user())
         {
+
             $response =  $next($request);
             $response->headers->set('Authorization', 'Bearer '.$request->bearerToken());
             return $response;
