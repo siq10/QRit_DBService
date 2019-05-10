@@ -33,6 +33,9 @@ use Jose\Component\Encryption\Serializer as ESerializer;
 use Jose\Component\Checker\HeaderCheckerManager;
 use Jose\Component\Checker\AlgorithmChecker;
 use Jose\Component\Signature\JWSTokenSupport;
+
+use Illuminate\Support\Facades\Hash;
+
 class AuthenticationsController extends Controller
 {
     /**
@@ -58,9 +61,17 @@ class AuthenticationsController extends Controller
             new A256KW()
         ]);
 
-// Our key.
+        $user = \App\User::where('email',$request->email)->first();
+        if(!$user)
+        {
+            return response()->json()->setStatusCode(404);
+        }
 
-
+        $validCredentials = Hash::check($request->password, $user['password']);
+        if(!$validCredentials)
+        {
+            return response()->json()->setStatusCode(404);
+        }
 // The JSON Converter.
         $jsonConverter = new StandardConverter();
 
@@ -103,6 +114,7 @@ class AuthenticationsController extends Controller
             $contentEncryptionAlgorithmManager,
             $compressionMethodManager
         );
+
         $payload = $jsonConverter->encode([
             'iat' => time(),
             'nbf' => time(),
@@ -111,8 +123,7 @@ class AuthenticationsController extends Controller
             'aud' => 'Your application',
 //            'username' => "john",
 //            'password' => "qwerty"
-                  'email' => $request->email,
-            'password' => $request->password,
+                  'id' => $user->id,
         ]);
 
 

@@ -43,5 +43,5 @@ Route::group(['middleware' => 'authorization'], function () {
 //------------------------------------------------------ hmm
 
 Route::resource('authentication', 'API\AuthenticationsController')->only(['show','store','update','destroy']);
-Route::resource('authorization', 'API\AuthorizationsController')->only(['show','store','update','destroy']);
+//Route::resource('authorization', 'API\AuthorizationsController')->only(['show','store','update','destroy']);
 

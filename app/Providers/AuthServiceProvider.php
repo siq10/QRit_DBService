@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Hash;
 use Symfony\Component\Debug\Exception\FatalThrowableError;
 
 use Jose\Component\Core\AlgorithmManager;
@@ -161,11 +160,9 @@ class AuthServiceProvider extends ServiceProvider
                 {
                     return null;
                 }
-                $data = Arr::only($decryptedjson, ['email', 'password']);
-                $user = User::where('email', $data['email'])
-                    ->first();
-                $validCredentials = Hash::check($data['password'], $user['password']);
-                if ($validCredentials) {
+                $data = Arr::only($decryptedjson, ['id']);
+                $user = User::find($data['id']);
+                if ($user) {
                     return $user;
                 }
                 else
