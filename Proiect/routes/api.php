@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,32 +17,31 @@ Route::get($uri, function () {
     return response()->json("Laravel sent this baby!");
 })->middleware('authorization');
 
+Route::post('users','API\UsersController@store');
 
-Route::middleware(['authorization'])->group(function () {
-    Route:: resource('orders','API\OrdersController')->only(['index','show','store','update','destroy']);
+Route::group(['middleware' => 'authorization'], function () {
+    Route:: resource('orders','API\OrdersController')->only(['index','show','store','update','destroy'])->middleware(\App\Http\Middleware\Waiter::class);
 
-    Route:: resource('clients','API\ClientsController')->only(['index','show','store','update','destroy']);
+    Route:: resource('clients','API\ClientsController')->only(['index','show','store','update','destroy'])->middleware(\App\Http\Middleware\Client::class);
 
     Route:: resource('waiters','API\WaitersController')->only(['index','show','store','update','destroy']);
 
     Route:: resource('owners','API\OwnersController')->only(['index','show','store','update','destroy']);
 
-    Route::resource('users', 'API\UserController')->only(['index','show', 'store', 'update', 'destroy']);
+    Route::resource('users', 'API\UsersController')->only(['index','show', 'update', 'destroy']);
 
     Route::resource ('places','API\PlacesController')->only(['index','show','store','update','destroy']);
 
-    Route::resource('reservation','API\ReservationsController')-> only(['index','show','store','update','destroy']);
+    Route::resource('reservations','API\ReservationsController')-> only(['index','show','store','update','destroy']);
 
     Route:: resource('orders.products','API\Orders\ProductsController')->only(['index','show','store','update','destroy']);
 
     Route:: resource('products','API\ProductsController')->only(['index','show','store','update','destroy']);
 });
 // USERS
-//Route::post('/register', 'AuthController@register');
-//Route::post('/login', 'AuthController@login');
-//Route::post('/logout', 'AuthController@logout');
+
 //------------------------------------------------------ hmm
-/*
-Route::resource('authentication', 'API/AuthController')->only(['show','store','update','destroy'])
-Route::resource('authorization', 'API/AuthController')->only(['show','store','update','destroy'])
-*/
+
+Route::resource('authentication', 'API\AuthenticationsController')->only(['show','store','update','destroy']);
+//Route::resource('authorization', 'API\AuthorizationsController')->only(['show','store','update','destroy']);
+

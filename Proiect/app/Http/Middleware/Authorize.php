@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Middleware;
+use Illuminate\Support\Facades\Auth;
 
 use Closure;
 
@@ -15,6 +16,26 @@ class Authorize
      */
     public function handle($request, Closure $next)
     {
-        return $next($request);
+        if(Auth::user())
+        {
+
+            $response =  $next($request);
+            $response->headers->set('Authorization', 'Bearer '.$request->bearerToken());
+            return $response;
+        }
+        else
+        {
+            $unprotectedRoutes = ["api/users",
+                "api/authentication"];
+            if(in_array($request->path(),$unprotectedRoutes) )
+            {
+                $response =  $next($request);
+                return $response;
+            }
+            else
+            {
+                return response()->json()->setStatusCode(401);
+            }
+        }
     }
 }
