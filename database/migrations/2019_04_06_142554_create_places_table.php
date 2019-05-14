@@ -26,6 +26,9 @@ class CreatePlacesTable extends Migration
             $table->string('zipcode');
             $table->integer('totalSlots');
             $table->integer('availableSlots');
+			$table->string('status')->nullable();
+			$table->integer('rating')->nullable();
+            $table->string('image')->nullable();
             $table->timestamps();
 
         });
