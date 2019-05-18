@@ -55,6 +55,8 @@ class PlacesController extends Controller
         $place->zipcode = $request->zipcode;
         $place->totalSlots = $request->totalSlots;
         $place->availableSlots = $request->totalSlots;
+		$place->rating = $request->rating;
+		$place->image = $request->image;
         try {
             $place->save();
             return response()

@@ -42,6 +42,7 @@ class UsersController extends Controller
                 ->setStatusCode(201,"Resource created");
          } catch(\Illuminate\Database\QueryException $ex){
             \Log::error('Encountered while trying to store an User!', ['context' => $ex->getMessage()]);
+			//dd($ex->getMessage());
             return response()
                 ->json(["message" => "Email must be unique!",
                         'reason' => "email"])
