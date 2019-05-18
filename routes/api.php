@@ -15,9 +15,11 @@
 $uri = "test";
 Route::get($uri, function () {
     return response()->json("Laravel sent this baby!");
-})->middleware('authorization');
+});
 
 Route::post('users','API\UsersController@store');
+
+Route::get('users', 'API\UsersController@index');
 
 Route::group(['middleware' => 'authorization'], function () {
     Route:: resource('orders','API\OrdersController')->only(['index','show','store','update','destroy'])->middleware(\App\Http\Middleware\Waiter::class);
@@ -28,7 +30,7 @@ Route::group(['middleware' => 'authorization'], function () {
 
     Route:: resource('owners','API\OwnersController')->only(['index','show','store','update','destroy']);
 
-    Route::resource('users', 'API\UsersController')->only(['index','show', 'update', 'destroy']);
+    Route::resource('users', 'API\UsersController')->only(['show', 'update', 'destroy']);
 
     Route::resource ('places','API\PlacesController')->only(['index','show','store','update','destroy']);
 
@@ -37,8 +39,11 @@ Route::group(['middleware' => 'authorization'], function () {
     Route:: resource('orders.products','API\Orders\ProductsController')->only(['index','show','store','update','destroy']);
 
     Route:: resource('products','API\ProductsController')->only(['index','show','store','update','destroy']);
+
+
 });
 // USERS
+Route::resource('qrs','API\QrController')->only(['index','show','update','destroy']);
 
 //------------------------------------------------------ hmm
 

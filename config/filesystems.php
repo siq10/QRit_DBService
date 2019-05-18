@@ -64,6 +64,11 @@ return [
             'url' => env('AWS_URL'),
         ],
 
+        'qr' => [
+            'driver' => 'local',
+            'root' => storage_path('Qr'),
+        ],
+
     ],
 
 ];

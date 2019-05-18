@@ -20,6 +20,7 @@ class CreateTablesTable extends Migration
             $table->integer("slots");
             $table->integer("status");
             $table->integer("number");
+            $table->string('qr')->nullable();
             $table->timestamps();
         });
     }

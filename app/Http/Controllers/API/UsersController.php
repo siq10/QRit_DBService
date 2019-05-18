@@ -27,6 +27,7 @@ class UsersController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
+
     {
             $user = new User;
             $user->email = $request->email;
