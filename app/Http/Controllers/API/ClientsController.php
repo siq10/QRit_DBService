@@ -17,8 +17,8 @@ class ClientsController extends Controller
     public function index()
     {
         return response()
-            ->json(Client::all())
-            ->setStatusCode(200);
+            ->json(["payload"=> Client::all(),'status'=>200]);
+            //->setStatusCode(200);
     }
 
 
@@ -34,7 +34,7 @@ class ClientsController extends Controller
 
         ]);
         if ($validator->fails()) {
-            return response()->json(['errors'=>$validator->errors()],422);
+            return response()->json(['errors'=>$validator->errors(),'status'=>422]);
         }
         $client = new Client;
 //        dd($request->post());
@@ -42,8 +42,9 @@ class ClientsController extends Controller
         try{
             $client->save();
             return response()
-                ->json()
-                ->setStatusCode(201,"Resource created")
+                ->json(['status'=>201])
+                ->setStatusCode(200);
+                //->setStatusCode(201,"Resource created")
                 ->withHeaders([
                     "Location" => $request->url().'/'.$client->id
                 ]);
@@ -51,8 +52,9 @@ class ClientsController extends Controller
             \Log::error('Encountered while trying to store a Client!', ['context' => $ex->getMessage()]);
             return response()
                 ->json(["message" => "Provided user is incorrect. Most likely a server processing error while storing client!",
-                    'reason' => "user_id"])
-                ->setStatusCode(422);
+                    'reason' => "user_id", 'status'=>422])
+                ->setStatusCode(200);
+                //->setStatusCode(422);
         }
     }
 
@@ -68,14 +70,16 @@ class ClientsController extends Controller
         if(is_null($client))
         {
             return response()
-                ->json()
-                ->setStatusCode(404);
+                ->json(['status'=>404])
+                -> setStatusCode(200);
+               // ->setStatusCode(404);
         }
         else
         {
             return response()
-                ->json($client)
+                ->json([$client,'status'=>200])
                 ->setStatusCode(200);
+                //->setStatusCode(200);
         }
     }
 
@@ -103,8 +107,9 @@ class ClientsController extends Controller
             try {
                 $client->save();
                 return response()
-                    ->json()
-                    ->setStatusCode(201);
+                    ->json(['status'=>201])
+                    -> setStatusCode(200);
+                    //->setStatusCode(201);
 //                 ->withHeaders([
 //                "Location" => $request->url()
 //                ]);
@@ -114,8 +119,9 @@ class ClientsController extends Controller
                 \Log::error('Encountered while trying to store a Client!', ['context' => $ex->getMessage()]);
                 return response()
                     ->json(["message" => "Unknown error occured while processing data!",
-                        'reason' => "unknown"])
-                    ->setStatusCode(422);
+                        'reason' => "unknown", 'status'=> 422])
+                    ->setStatusCode(200);
+                    //->setStatusCode(422);
             }
         }
         else
@@ -125,8 +131,9 @@ class ClientsController extends Controller
             try{
                 $client->save();
                 return response()
-                    ->json()
+                    ->json(['status'=>200])
                     ->setStatusCode(200);
+                    //->setStatusCode(200);
 //                ->withHeaders([
 //                    "Location" => $request->url()
 //                ]);
@@ -135,8 +142,9 @@ class ClientsController extends Controller
                 \Log::error('Encountered while trying to store a Client!', ['context' => $ex->getMessage()]);
                 return response()
                     ->json(["message" => "Unknown error occured while processing data!",
-                        'reason' => "unknown"])
-                    ->setStatusCode(422);
+                        'reason' => "unknown",'status'=>422])
+                    -> setStatusCode(200);
+                    //->setStatusCode(422);
                 }
         }
 
@@ -154,15 +162,17 @@ class ClientsController extends Controller
         if(is_null($client))
         {
             return response()
-                ->json()
-                ->setStatusCode(404);
+                ->json(['status'=>404])
+                -> setStatusCode(200);
+                //->setStatusCode(404);
         }
         else
         {
             $client->delete();
             return response()
-                ->json()
-                ->setStatusCode(204);
+                ->json(['status'=>204])
+                ->setStatusCode(200);
+                //->setStatusCode(204);
         }
     }
 }

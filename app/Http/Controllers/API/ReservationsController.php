@@ -17,7 +17,8 @@ class ReservationsController extends Controller
     public function index()
     {
         $res = Reservation::all();
-        return response()->json($res)->setStatusCode(Response::HTTP_OK); //HTTP_OK=200;
+        return response()->json(['payload'=>$res,'status'=>200])
+        ->setStatusCode(Response::HTTP_OK); //HTTP_OK=200;
     }
 
     /**
@@ -44,7 +45,9 @@ class ReservationsController extends Controller
         $res->status=$request->status;
         $res->save();
 
-        return response()->json($res)->setStatusCode(Response::HTTP_CREATED);
+        return response()->json([$res,'status'=>201])
+        ->setStatusCode(Response::HTTP_OK);
+        //->setStatusCode(Response::HTTP_CREATED);
         //$token = $this->authorizeUser($user);
         //return response()->json($token);
     }

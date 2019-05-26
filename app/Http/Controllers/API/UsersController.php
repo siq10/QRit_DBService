@@ -16,7 +16,7 @@ class UsersController extends Controller
     public function index()
     {
         return response()
-            ->json(User::all())
+            ->json(['payload'=>User::all(),'status'=>200])
             ->setStatusCode(200);
     }
 
@@ -38,15 +38,17 @@ class UsersController extends Controller
         try{
             $user->save();
             return response()
-                ->json($user->only('id','email','firstname','lastname', 'username'))
-                ->setStatusCode(201,"Resource created");
+                ->json([$user->only('id','email','firstname','lastname', 'username'),'status'=>201])
+                ->setStatusCode(200);
+                //->setStatusCode(201,"Resource created");
          } catch(\Illuminate\Database\QueryException $ex){
             \Log::error('Encountered while trying to store an User!', ['context' => $ex->getMessage()]);
 			//dd($ex->getMessage());
             return response()
                 ->json(["message" => "Email must be unique!",
-                        'reason' => "email"])
-                ->setStatusCode(422);
+                        'reason' => "email",'status'=>422])
+                ->setStatusCode(200);
+                //->setStatusCode(422);
         }
 //        $token = $this->authorizeUser($user);
 //        return response()->json($token);

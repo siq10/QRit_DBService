@@ -17,7 +17,8 @@ class TablesController extends Controller
     public function index()
     {
         $tables = Table::all();
-        return response()->json($tables)->setStatusCode(Response::HTTP_OK); //HTTP_OK=200;
+        return response()->json(["payload"=>$tables,'status'=>200])
+        ->setStatusCode(Response::HTTP_OK); //HTTP_OK=200;
     }
 
     /**
@@ -37,7 +38,9 @@ class TablesController extends Controller
 
         $table->save();
 
-        return response()->json($table)->setStatusCode(Response::HTTP_CREATED);
+        return response()->json([$table,'status'=>201])
+        ->setStatusCode(Response::HTTP_OK);
+        //->setStatusCode(Response::HTTP_CREATED);
     }
 
     /**
@@ -51,7 +54,8 @@ class TablesController extends Controller
         $tables= Table::find($id);
         $data = DB::table('tables')->where('id', '=', "{$id}")->get();
         //$data = DB::table('places')->where('name', '=', "{$name}")->get();
-        return response()->json($data)->setStatusCode(Response::HTTP_OK);
+        return response()->json([$data,'status'=>200])
+        ->setStatusCode(Response::HTTP_OK);
     }
 
     /**

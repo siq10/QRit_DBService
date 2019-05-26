@@ -17,7 +17,7 @@ class WaitersController extends Controller
     public function index()
     {
         return response()
-            ->json(Waiter::all())
+            ->json(["payload"=>Waiter::all(),'status'=>200])
             ->setStatusCode(200);
     }
 
@@ -33,7 +33,7 @@ class WaitersController extends Controller
 
         ]);
         if ($validator->fails()) {
-            return response()->json(['errors'=>$validator->errors()],422);
+            return response()->json(['errors'=>$validator->errors(),'status'=>422]);
         }
 
         $waiter = new Waiter;
@@ -43,8 +43,9 @@ class WaitersController extends Controller
         try {
             $waiter->save();
             return response()
-                ->json()
-                ->setStatusCode(201, "Resource created")
+                ->json(['status'=>201])
+                ->setStatusCode(200)
+                //->setStatusCode(201, "Resource created")
                 ->withHeaders([
                     "Location" => $request->url().'/'.$waiter->id
                 ]);
@@ -53,8 +54,9 @@ class WaitersController extends Controller
             \Log::error('Encountered while trying to store a Waiter!', ['context' => $ex->getMessage()]);
             return response()
                 ->json(["message" => "Provided user is incorrect. Most likely a server processing error while storing waiter!",
-                    'reason' => "user_id"])
-                ->setStatusCode(422);
+                    'reason' => "user_id",'status'=>422])
+                ->setStatusCode(200);
+                //->setStatusCode(422);
         }
     }
 
@@ -70,13 +72,14 @@ class WaitersController extends Controller
         if(is_null($waiter))
         {
             return response()
-                ->json()
-                ->setStatusCode(404);
+                ->json(['status'=>404])
+                ->setStatusCode(200);
+                //->setStatusCode(404);
         }
         else
         {
             return response()
-                ->json($waiter)
+                ->json([$waiter,'status'=>200])
                 ->setStatusCode(200);
         }
     }
@@ -96,7 +99,7 @@ class WaitersController extends Controller
 
         ]);
         if ($validator->fails()) {
-            return response()->json(['errors'=>$validator->errors()],422);
+            return response()->json(['errors'=>$validator->errors(),'status'=>422]);
         }
 
         $waiter = Waiter::find($id);
@@ -109,8 +112,9 @@ class WaitersController extends Controller
             try {
                 $waiter->save();
                 return response()
-                    ->json()
-                    ->setStatusCode(201);
+                    ->json(['status'=>201])
+                    ->setStatusCode(200);
+                    //->setStatusCode(201);
 //                 ->withHeaders([
 //                "Location" => $request->url()
 //                ]);
@@ -120,8 +124,9 @@ class WaitersController extends Controller
                 \Log::error('Encountered while trying to store a Waiter!', ['context' => $ex->getMessage()]);
                 return response()
                     ->json(["message" => "Unknown error occured while processing data!",
-                        'reason' => "unknown"])
-                    ->setStatusCode(422);
+                        'reason' => "unknown",'status'=>422])
+                    ->setStatusCode(200);
+                    //->setStatusCode(422);
             }
         }
         else
@@ -132,7 +137,7 @@ class WaitersController extends Controller
             try{
                 $waiter->save();
                 return response()
-                    ->json()
+                    ->json(['status'=>200])
                     ->setStatusCode(200);
 //                ->withHeaders([
 //                    "Location" => $request->url()
@@ -142,8 +147,9 @@ class WaitersController extends Controller
                 \Log::error('Encountered while trying to store a Waiter!', ['context' => $ex->getMessage()]);
                 return response()
                     ->json(["message" => "Unknown error occured while processing data!",
-                        'reason' => "unknown"])
-                    ->setStatusCode(422);
+                        'reason' => "unknown",'status'=>422])
+                    ->setStatusCode(200);
+                    //->setStatusCode(422);
             }
         }
     }
@@ -160,15 +166,17 @@ class WaitersController extends Controller
         if(is_null($waiter))
         {
             return response()
-                ->json()
-                ->setStatusCode(404);
+                ->json(['status'=>404])
+                ->setStatusCode(200);
+                //->setStatusCode(404);
         }
         else
         {
             $waiter->delete();
             return response()
-                ->json()
-                ->setStatusCode(204);
+                ->json(['status'=>204])
+                ->setStatusCode(200);
+                //->setStatusCode(204);
         }
     }
 }

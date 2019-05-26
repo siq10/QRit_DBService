@@ -16,7 +16,7 @@ class OrdersController extends Controller
      */
     public function index()
     {
-        return response()->json(Order::all());
+        return response()->json(["payload"=>Order::all(),'status'=>200]);
     }
 
     /**
@@ -34,7 +34,8 @@ class OrdersController extends Controller
             'status' => 'required'
         ]);
         if ($validator->fails()) {
-            return response()->json(['errors'=>$validator->errors()],422);
+            return response()->json(['errors'=>$validator->errors(),'status'=>422]);
+            //->setStatusCode(200);
         }
         $order = new Order;
         $order->client_id = $request->client_id;
@@ -44,8 +45,9 @@ class OrdersController extends Controller
         try {
             $order->save();
             return response()
-                ->json()
-                ->setStatusCode(201, "Resource created")
+                ->json(['status'=>201])
+                //->setStatusCode(201, "Resource created")
+                ->setStatusCode(200)
                 ->withHeaders([
                     "Location" => $request->url().'/'.$order->id
                 ]);
@@ -54,8 +56,9 @@ class OrdersController extends Controller
             \Log::error('Encountered while trying to store an Order!', ['context' => $ex->getMessage()]);
             return response()
                 ->json(["message" => "Unknown error occured while processing data!",
-                    'reason' => "unknown"])
-                ->setStatusCode(422);
+                    'reason' => "unknown",'status'=>422])
+                ->setStatusCode(200);        
+                //->setStatusCode(422);
         }
     }
 
@@ -71,14 +74,16 @@ class OrdersController extends Controller
         if(is_null($order))
         {
             return response()
-                ->json()
-                ->setStatusCode(404);
+                ->json(['status'=>404])
+                ->setStatusCode(200);
+                //->setStatusCode(404);
         }
         else
         {
             return response()
-                ->json($order)
+                ->json([$order,'status'=200])
                 ->setStatusCode(200);
+                //->setStatusCode(200);
         }
     }
 
@@ -110,8 +115,9 @@ class OrdersController extends Controller
             try {
                 $order->save();
                 return response()
-                    ->json()
-                    ->setStatusCode(201);
+                    ->json(['status'=>201])
+                    ->setStatusCode(200);
+                    //->setStatusCode(201);
 //                 ->withHeaders([
 //                "Location" => $request->url()
 //                ]);
@@ -121,8 +127,9 @@ class OrdersController extends Controller
                 \Log::error('Encountered while trying to store an Order!', ['context' => $ex->getMessage()]);
                 return response()
                     ->json(["message" => "Unknown error occured while processing data!",
-                        'reason' => "unknown"])
-                    ->setStatusCode(422);
+                        'reason' => "unknown",'status'=>422])
+                    ->setStatusCode(200);
+                    //->setStatusCode(422);
             }
         }
         else
@@ -134,8 +141,9 @@ class OrdersController extends Controller
             try {
                 $order->save();
                 return response()
-                    ->json()
+                    ->json(['status'=>200])
                     ->setStatusCode(200);
+                    //->setStatusCode(200);
 //                ->withHeaders([
 //                    "Location" => $request->url()
 //                ]);
@@ -145,8 +153,9 @@ class OrdersController extends Controller
                 \Log::error('Encountered while trying to store an Order!', ['context' => $ex->getMessage()]);
                 return response()
                     ->json(["message" => "Unknown error occured while processing data!",
-                        'reason' => "unknown"])
-                    ->setStatusCode(422);
+                        'reason' => "unknown",'status'=>422])
+                    ->setStatusCode(200);
+                    //->setStatusCode(422);
             }
         }
     }
@@ -163,15 +172,18 @@ class OrdersController extends Controller
         if(is_null($order))
         {
             return response()
-                ->json()
-                ->setStatusCode(404);
+                ->json(['status'=>404])
+                ->setStatusCode(200);
+                //->setStatusCode(404);
         }
         else
         {
             $order->delete();
             return response()
-                ->json()
-                ->setStatusCode(204);
+                ->json(['status'=>204])
+                ->setStatusCode(200);
+                //->setStatusCode(204);
+
         }
     }
 }

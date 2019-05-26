@@ -17,8 +17,9 @@ class ProductsController extends Controller
     public function index()
     {
         return response()
-            ->json(Product::all())
+            ->json(['payload'=>Product::all(),'status'=>200])
             ->setStatusCode(200);
+            //->setStatusCode(200);
     }
 
     /**
@@ -37,7 +38,7 @@ class ProductsController extends Controller
             'description' => 'required'
         ]);
         if ($validator->fails()) {
-            return response()->json(['errors'=>$validator->errors()],422);
+            return response()->json(['errors'=>$validator->errors(),'status'=>422]);
         }
         $product = new Product;
 //        dd($request->post());
@@ -49,8 +50,9 @@ class ProductsController extends Controller
         try {
             $product->save();
             return response()
-                ->json()
-                ->setStatusCode(201, "Resource created")
+                ->json(['status'=>201])
+                ->setStatusCode(200)
+                //->setStatusCode(201, "Resource created")
                 ->withHeaders([
                     "Location" => $request->url().'/'.$product->id
                 ]);
@@ -59,8 +61,9 @@ class ProductsController extends Controller
             \Log::error('Encountered while trying to store a Product!', ['context' => $ex->getMessage()]);
             return response()
                 ->json(["message" => "Unknown error occured while processing data!",
-                    'reason' => "unknown"])
-                ->setStatusCode(422);
+                    'reason' => "unknown",'status'=>422])
+                ->setStatusCode(200);
+                //->setStatusCode(422);
         }
     }
 
@@ -76,14 +79,16 @@ class ProductsController extends Controller
         if(is_null($product))
         {
             return response()
-                ->json()
-                ->setStatusCode(404);
+                ->json(['status'=>404])
+                ->setStatusCode(200);
+                //->setStatusCode(404);
         }
         else
         {
             return response()
-                ->json($product)
+                ->json([$product,'status'=>200])
                 ->setStatusCode(200);
+                //->setStatusCode(200);
         }
     }
 
@@ -116,8 +121,9 @@ class ProductsController extends Controller
             try {
                 $product->save();
                 return response()
-                    ->json()
-                    ->setStatusCode(201);
+                    ->json(['status'=>201])
+                    ->setStatusCode(200);
+                    //->setStatusCode(201);
 //                 ->withHeaders([
 //                "Location" => $request->url()
 //                ]);
@@ -127,8 +133,9 @@ class ProductsController extends Controller
                 \Log::error('Encountered while trying to store a Product!', ['context' => $ex->getMessage()]);
                 return response()
                     ->json(["message" => "Unknown error occured while processing data!",
-                        'reason' => "unknown"])
-                    ->setStatusCode(422);
+                        'reason' => "unknown",'status'=>422])
+                    ->setStatusCode(200);
+                    //->setStatusCode(422);
             }
         }
         else
@@ -142,7 +149,7 @@ class ProductsController extends Controller
             try{
                 $product->save();
                 return response()
-                    ->json()
+                    ->json(['status'=>200])
                     ->setStatusCode(200);
 //                ->withHeaders([
 //                    "Location" => $request->url()
@@ -152,8 +159,9 @@ class ProductsController extends Controller
                 \Log::error('Encountered while trying to store a Product!', ['context' => $ex->getMessage()]);
                 return response()
                     ->json(["message" => "Unknown error occured while processing data!",
-                        'reason' => "unknown"])
-                    ->setStatusCode(422);
+                        'reason' => "unknown",'status'=>422])
+                    ->setStatusCode(200);
+                    //->setStatusCode(422);
             }
         }
     }
@@ -170,15 +178,17 @@ class ProductsController extends Controller
         if(is_null($product ))
         {
             return response()
-                ->json()
-                ->setStatusCode(404);
+                ->json(['status'=>404])
+                ->setStatusCode(200);
+                //->setStatusCode(404);
         }
         else
         {
             $product ->delete();
             return response()
-                ->json()
-                ->setStatusCode(204);
+                ->json(['status'=>204])
+                ->setStatusCode(200);
+                //->setStatusCode(204);
         }
     }
 }
