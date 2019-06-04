@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\API;
 
+
+use DB;
 use App\Order;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -16,7 +18,20 @@ class OrdersController extends Controller
      */
     public function index()
     {
-        return response()->json(["payload"=>Order::all(),'status'=>200]);
+       // $orders = Order::all();
+        $orders = DB::table('orders')
+            ->join('waiters', 'orders.waiter_id', '=', 'waiters.id') 
+            ->join('tables', 'orders.table_id', '=', 'tables.id')
+            ->join('clients', 'orders.client_id', '=', 'clients.id')
+            //->join('users',function ($join) {
+            //$join->on ('waiters.user_id', '=', 'users.id')->orOn('clients.user_id', '=', 'users.id');})
+            ->join('users as u1','clients.user_id', '=', 'u1.id' )
+            ->join ('users as u2','waiters.user_id', '=', 'u2.id')
+            -> where ('waiters.user_id','<>','clients.user_id')
+            ->select( "orders.id",'tables.tableNumber', 'u2.username','u1.firstname','u1.lastname')
+            ->get();
+        return response()->json(["payload"=>$orders,'status'=>200]);
+        //->setStatusCode(Response::HTTP_OK);
     }
 
     /**
@@ -81,7 +96,7 @@ class OrdersController extends Controller
         else
         {
             return response()
-                ->json([$order,'status'=200])
+                ->json([$order,'status'=>200])
                 ->setStatusCode(200);
                 //->setStatusCode(200);
         }
