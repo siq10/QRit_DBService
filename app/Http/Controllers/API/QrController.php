@@ -20,7 +20,11 @@ class QrController extends Controller
      */
     public function index()
     {
-        //
+        /*$tables = Table::all();
+        $x = base64_encode(file_get_contents(storage_path('/Qr/'.$tables->qr.'.png')));
+        return response()->json(["payload"=>$x,'status'=>200])
+        ->setStatusCode(Response::HTTP_OK); //HTTP_OK=200;
+        */
     }
 
 
@@ -78,6 +82,7 @@ class QrController extends Controller
         $data = $request->only('id','place_id','number');
         $jsonified = json_encode($data);
         $table = Table::find($request->id);
+
         if($table)
         {
             Storage::disk("qr")->delete($table->qr.".png");

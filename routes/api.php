@@ -15,7 +15,7 @@ Route::get($uri, function () {
 });
 Route::post('users','API\UsersController@store');
 Route::get('users', 'API\UsersController@index');
-Route::group(['middleware' => 'authorization'], function () {
+//Route::group(['middleware' => 'authorization'], function () {
     Route:: resource('orders','API\OrdersController')->only(['index','show','store','update','destroy'])->middleware(\App\Http\Middleware\Waiter::class);
     Route:: resource('clients','API\ClientsController')->only(['index','show','store','update','destroy'])->middleware(\App\Http\Middleware\Client::class);
     Route:: resource('waiters','API\WaitersController')->only(['index','show','store','update','destroy']);
@@ -25,7 +25,8 @@ Route::group(['middleware' => 'authorization'], function () {
     Route::resource('reservations','API\ReservationsController')-> only(['index','show','store','update','destroy']);
     Route:: resource('orders.products','API\Orders\ProductsController')->only(['index','show','store','update','destroy']);
     Route:: resource('products','API\ProductsController')->only(['index','show','store','update','destroy']);
-});
+    Route:: resource ('tables','API\TablesController')->only(['index','show','store','update','destroy']);
+//});
 // USERS
 Route::resource('qrs','API\QrController')->only(['index','show','update','destroy']);
 //------------------------------------------------------ hmm

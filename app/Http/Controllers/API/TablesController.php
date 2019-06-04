@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
 
+
 class TablesController extends Controller
 {
     /**
@@ -17,8 +18,15 @@ class TablesController extends Controller
     public function index()
     {
         $tables = Table::all();
-        return response()->json(["payload"=>$tables,'status'=>200])
-        ->setStatusCode(Response::HTTP_OK); //HTTP_OK=200;
+        foreach ($tables as $table)
+         {  $table->qr= base64_encode(file_get_contents(storage_path('/Qr/'.$table->qr.'.png')));
+           // return response()->json(["payload"=>$table,"status"=>200]);
+        }
+    
+        return response()->json(["payload"=>$tables,'status'=>200]);
+        
+        //->setStatusCode(Response::HTTP_OK); //HTTP_OK=200;
+
     }
 
     /**

@@ -17,9 +17,8 @@ class PlacesController extends Controller
     public function index()
     {
         return response()
-            ->json(['payload'=>Place::all(),'status'=>200])
+            ->json(Place::all())
             ->setStatusCode(200);
-            //->setStatusCode(200);
     }
 
     /**
@@ -43,7 +42,7 @@ class PlacesController extends Controller
 //            'availableTables' => 'required',
         ]);
         if ($validator->fails()) {
-            return response()->json(['errors'=>$validator->errors(),'status'=>422]);
+            return response()->json(['errors'=>$validator->errors()],422);
         }
         $place = new Place;
 //        dd($request->post());
@@ -56,14 +55,13 @@ class PlacesController extends Controller
         $place->zipcode = $request->zipcode;
         $place->totalSlots = $request->totalSlots;
         $place->availableSlots = $request->totalSlots;
-		$place->rating = $request->rating;
-		$place->image = $request->image;
+        $place->rating = $request->rating;
+        $place->image = $request->image;
         try {
             $place->save();
             return response()
-                ->json(['status'=>201])
-                ->setStatusCode(200)
-                //->setStatusCode(201, "Resource created")
+                ->json()
+                ->setStatusCode(201, "Resource created")
                 ->withHeaders([
                 "Location" => $request->url().'/'.$place->id
                 ]);
@@ -72,9 +70,8 @@ class PlacesController extends Controller
             \Log::error('Encountered while trying to store a Place!', ['context' => $ex->getMessage()]);
             return response()
                 ->json(["message" => "Unknown error occured while processing data!",
-                    'reason' => "unknown",'status'=>422])
-                ->setStatusCode(200);
-                //->setStatusCode(422);
+                    'reason' => "unknown"])
+                ->setStatusCode(422);
         }
     }
 
@@ -90,16 +87,14 @@ class PlacesController extends Controller
         if(is_null($place))
         {
             return response()
-                ->json(['status'=>404])
-                ->setStatusCode(200);
-                //->setStatusCode(404);
+                ->json()
+                ->setStatusCode(404);
         }
         else
         {
             return response()
-                ->json([$place,'status'=>200])
+                ->json($place)
                 ->setStatusCode(200);
-                //->setStatusCode(200);
         }
     }
 
@@ -116,7 +111,7 @@ class PlacesController extends Controller
 
         ]);
         if ($validator->fails()) {
-            return response()->json(['errors'=>$validator->errors(),'status'=>422]);
+            return response()->json(['errors'=>$validator->errors()],422);
         }
 
         $place = Place::find($id);
@@ -136,9 +131,8 @@ class PlacesController extends Controller
             try {
                 $place->save();
                 return response()
-                    ->json(['status'=>201])
-                    ->setStatusCode(200);
-                    //->setStatusCode(201);
+                    ->json()
+                    ->setStatusCode(201);
 //                 ->withHeaders([
 //                "Location" => $request->url()
 //                ]);
@@ -148,9 +142,8 @@ class PlacesController extends Controller
                 \Log::error('Encountered while trying to store a Place!', ['context' => $ex->getMessage()]);
                 return response()
                     ->json(["message" => "Unknown error occured while processing data!",
-                        'reason' => "unknown",'status'=>422])
-                    ->setStatusCode(200);
-                    //->setStatusCode(422);
+                        'reason' => "unknown"])
+                    ->setStatusCode(422);
             }
         }
         else
@@ -168,9 +161,8 @@ class PlacesController extends Controller
             try{
                 $place->save();
                 return response()
-                    ->json(['status'=>200])
+                    ->json()
                     ->setStatusCode(200);
-                    //->setStatusCode(200);
 //                ->withHeaders([
 //                    "Location" => $request->url()
 //                ]);
@@ -179,9 +171,8 @@ class PlacesController extends Controller
                 \Log::error('Encountered while trying to store a Place!', ['context' => $ex->getMessage()]);
                 return response()
                     ->json(["message" => "Unknown error occured while processing data!",
-                        'reason' => "unknown",'status'=>422])
-                    ->setStatusCode(200);
-                    //->setStatusCode(422);
+                        'reason' => "unknown"])
+                    ->setStatusCode(422);
             }
         }
     }
@@ -198,17 +189,15 @@ class PlacesController extends Controller
         if(is_null($place))
         {
             return response()
-                ->json(['status'=>404])
-                ->setStatusCode(200);
-                //->setStatusCode(404);
+                ->json()
+                ->setStatusCode(404);
         }
         else
         {
             $place->delete();
             return response()
-                ->json(['status'=>204])
-                ->setStatusCode(200);
-                //->setStatusCode(204);
+                ->json()
+                ->setStatusCode(204);
         }
     }
 }

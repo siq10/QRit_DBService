@@ -13,6 +13,7 @@
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
+        "nesbot/carbon": "^2.18",
         "web-token/jwt-checker": "^1.3",
         "web-token/jwt-core": "^1.3",
         "web-token/jwt-encryption": "^1.3",
