@@ -56,6 +56,8 @@ class AuthenticationsController extends Controller
      */
     public function store(Request $request)
     {
+//        dd($request->all());
+
         $algorithmManager = AlgorithmManager::create([
             new HS256(),
             new A256KW()
@@ -148,9 +150,10 @@ class AuthenticationsController extends Controller
             'jwe_compact'                         // The serialization mode for the JWE.
 //            'jwe_json_flattened'
         );
-
+//        dd(2);
+        $userdata = collect($user->toArray())->only("id","firstname","lastname","email",'image');
         return response()
-        ->json($token)
+        ->json(array($token,$userdata))
         ->setStatusCode(201, "JWT created");
 
 //        $jwsVerifier = new JWSVerifier(

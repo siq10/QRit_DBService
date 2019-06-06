@@ -74,7 +74,7 @@ class UsersController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        return $this->login($request);
+//        return $this->login($request);
     }
 
     /**
