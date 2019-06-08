@@ -12,7 +12,6 @@
 
 /*
 !.gitignore
-
 !routes/
 !routes/**
 
@@ -37,3 +36,4 @@
 !composer.json
 !package.json
 !composer.lock
+!laravelApp
