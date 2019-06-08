@@ -46,9 +46,9 @@ class UsersController extends Controller
 			//dd($ex->getMessage());
             return response()
                 ->json(["message" => "Email must be unique!",
-                        'reason' => "email",'status'=>422])
-                ->setStatusCode(200);
-                //->setStatusCode(422);
+                        'reason' => "email"])
+                ->setStatusCode(422);
+
         }
 //        $token = $this->authorizeUser($user);
 //        return response()->json($token);
@@ -74,7 +74,7 @@ class UsersController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        return $this->login($request);
+//        return $this->login($request);
     }
 
     /**

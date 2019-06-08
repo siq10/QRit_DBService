@@ -20,6 +20,7 @@ class Authorize
         {
 
             $response =  $next($request);
+
             $response->headers->set('Authorization', 'Bearer '.$request->bearerToken());
             return $response;
         }
